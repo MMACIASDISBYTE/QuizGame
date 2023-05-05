@@ -5,6 +5,8 @@ Console.WriteLine("Hello, World!");
 
 var questions = new List<Question>(); //inicializo lista de questions
 var answers = new List<Answer>(); //inicializando lista de answers
+var scores = new Dictionary<string, int>();
+
 SeedQuestionsAndOptions();
 
 StartGame();
@@ -31,6 +33,11 @@ void StartGame()
         var answer = GetSelectecAnswer();
         AddAnswerToList(answer, item);
     }
+
+    int score = GetScore();
+    Console.WriteLine($"Nice try {player}! You answered well {score} questions...");
+
+    UpdateScore(player, score);
 }
 
 string GetSelectecAnswer()
@@ -121,5 +128,31 @@ void SeedQuestionsAndOptions()
             new Option { Id = 4, Text = "Switzerland"},
         }
     });
-    
+}
+
+int GetScore()
+{
+    int score = 0;
+
+    foreach (var item in answers)
+    {
+        if(item.SelectedOption.IsValid)
+            score++;
+    }
+    return score;
+}
+
+void UpdateScore(string player, int score)
+{
+    bool updated = false;
+    foreach (var item in scores)
+    {
+        if(item.Key == player)
+        {
+            scores[item.Key] = score;
+            updated = true;
+        }
+        if(!updated)
+            scores.Add(player, score);
+    }
 }
