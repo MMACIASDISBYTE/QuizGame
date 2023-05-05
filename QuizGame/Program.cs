@@ -38,6 +38,16 @@ void StartGame()
     Console.WriteLine($"Nice try {player}! You answered well {score} questions...");
 
     UpdateScore(player, score);
+
+    ShowScores();
+
+    answers = new List<Answer>();
+    Console.WriteLine("Do you want to play again?");
+    Console.WriteLine("Enter yes to play again or any other key to stop...");
+
+    var playAgain = Console.ReadLine();
+    if (playAgain?.ToLower().Trim() == "yes")
+        StartGame();
 }
 
 string GetSelectecAnswer()
@@ -152,7 +162,17 @@ void UpdateScore(string player, int score)
             scores[item.Key] = score;
             updated = true;
         }
+    }
         if(!updated)
             scores.Add(player, score);
+}
+
+void ShowScores()
+{
+    Console.WriteLine("Scores:");
+
+    foreach(var item in scores)
+    {
+        Console.WriteLine($"{item.Key}, Score: {item.Value}");
     }
 }
